@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import { WelcomeCheckButton, WelcomeHeader, WelcomeSubTitle } from 'styled/main'
 
 export default function Home() {
@@ -16,9 +17,11 @@ export default function Home() {
       <WelcomeSubTitle className="block-center">
         An app for partitioning people into teams in order to avoid conflicts
       </WelcomeSubTitle>
-      <WelcomeCheckButton className="block-center" type="button">
-        Check this out
-      </WelcomeCheckButton>
+      <Link href={"/teamsPartition"}>
+        <WelcomeCheckButton className="block-center" type="button">
+          Check this out
+        </WelcomeCheckButton>
+      </Link>
     </>
   )
 }

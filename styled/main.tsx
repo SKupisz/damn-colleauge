@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const GraphicalData = {
     color: {
         title: "#048f29",
-        regular: "#08bcbf"
+        regular: "#027830"
     },
     textShadow: {
         title: "5px 5px 9px rgba(4, 143, 41,.4)",
@@ -12,6 +12,13 @@ export const GraphicalData = {
     boxShadow: "3px 3px 4px rgba(0,0,0,.25)",
     fontFamily: "Roboto Mono, sans-serif"
 };
+
+export const PageWrapper = styled.section`
+    width: calc(100% - 10px);
+    padding: 5px;
+    position: relative;
+    margin-bottom: 0.5vh;
+`;
 
 export const WelcomeHeader = styled.header`
     width: calc(100% - 20px);
