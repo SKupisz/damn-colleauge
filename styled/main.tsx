@@ -32,8 +32,7 @@ export const WelcomeHeader = styled.header`
     font-family: ${(props) => props.theme.fontFamily};
     text-shadow: ${(props) => props.theme.textShadow.title};
     font-weight: 700;
-    position: relative;
-    top: 6vh;
+    padding-top: 10vh;
     margin-bottom: 6vh;
 
     @media screen and (min-width: 425px){
@@ -43,7 +42,7 @@ export const WelcomeHeader = styled.header`
     @media screen and (min-width: 768px){
         width: calc(90% - 20px);
         font-size: 3.7em;
-        top: 9vh;
+        padding-top: 9vh;
     }
 
     @media screen and (min-width: 1024px){
@@ -62,9 +61,8 @@ export const WelcomeSubTitle = styled.header`
     -webkit-text-fill-color: transparent;
     font-family: ${(props) => props.theme.fontFamily};
     text-shadow: ${(props) => props.theme.textShadow.title};
-    position: relative;
-    top: 9vh;
-    margin-bottom: 4vh;
+    margin-bottom: 9vh;
+    padding-top: 4vh;
 
     @media screen and (min-width: 425px){
         font-size: 1.5em;
@@ -97,8 +95,7 @@ export const WelcomeCheckButton = styled.button`
     font-size: 1.3em;
     letter-spacing: 0em;
     font-family: ${(props) => props.theme.fontFamily};
-    position: relative;
-    top: 14vh;
+    margin-bottom: 9vh;
     transition: all 0.4s;
     cursor: pointer;
 

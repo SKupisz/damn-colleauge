@@ -6,15 +6,13 @@ export const FooterContainer = styled.section`
     text-align: center;
     border-top: 2px solid ${(props) => props.theme.color.title};
     color: ${(props) => props.theme.color.regular};
-    position: relative;
-    top: 20vh;
 `;
 
 export const FooterHeader = styled.header`
-    width: calc(90% - 10px);
+    width: calc(100% - 10px);
     padding: 10px 5px;
     text-align: center;
-    font-size: 2.1em;
+    font-size: 1.4em;
     letter-spacing: 0.02em;
     position: relative;
     top: 2vh;
@@ -34,5 +32,14 @@ export const FooterHeader = styled.header`
 
     & > a:hover {
         filter: brightness(70%);
+    }
+
+    @media screen and (min-width: 425px){
+        font-size: 1.7em;
+    }
+
+    @media screen and (min-width: 768px){
+        width: calc(90% - 10px);
+        font-size: 2.1em;
     }
 `;

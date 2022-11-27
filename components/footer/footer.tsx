@@ -6,7 +6,8 @@ import { FooterContainer, FooterHeader } from "styled/footer/footer";
 const Footer:React.FC = () => {
     return <FooterContainer className="block-center">
         <FooterHeader className="block-center">
-            Made by <a href="https://github.com/SKupisz" target="_blank">
+            Made by <a href="https://github.com/SKupisz" target="_blank"
+            rel="noreferrer">
                 Simon Kupisz
             </a>
         </FooterHeader>
