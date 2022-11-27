@@ -23,5 +23,16 @@ export const modifyCurrentEmployee = (employees: EmployeeType[], modifiedEmploye
 
         operandOfEmployees[modifiedEmployeeID] = newEmployeeData;
     }
-    return operandOfEmployees
+    return operandOfEmployees;
 };
+
+export const deleteGivenEmployee = (employees: EmployeeType[], deletedEmployeeID: number) : EmployeeType[] => {
+    const operandOfEmployees = [...employees];
+
+    if(deletedEmployeeID >= 0 && deletedEmployeeID <= employees.length){
+        operandOfEmployees.splice(deletedEmployeeID, 1);
+    }
+
+    return operandOfEmployees;
+
+}

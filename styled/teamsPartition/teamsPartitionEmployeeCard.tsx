@@ -33,6 +33,12 @@ export const TeamsPartitioningAddEmployeeButton = styled.div`
     }
 `;  
 
+export const TeamsPartitioningEmployeeInputsContainer = styled.div`
+    width: 100%;
+    text-align: center;
+    margin-bottom: 3vh;
+`;
+
 export const TeamsPartitioningEmployeeInput = styled.input`
     width: calc(100% - 20px);
     padding: 10px;

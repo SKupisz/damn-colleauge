@@ -2,14 +2,15 @@ import React, {useState} from "react";
 import Head from "next/head";
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 import { TeamsPartitionHeader, TeamsPartitioningCard, 
     TeamsPartitioningHeader, TeamsPartitioningEmployeesContainer} from "styled/teamsPartition/teamsPartition";
 import { TeamsPartitioningEmployeeCard, 
-    TeamsPartitioningEmployeeCardHeader, TeamsPartitioningAddEmployeeButton, TeamsPartitioningEmployeeInput } from "styled/teamsPartition/teamsPartitionEmployeeCard";
+    TeamsPartitioningEmployeeCardHeader, TeamsPartitioningAddEmployeeButton, TeamsPartitioningEmployeeInput, TeamsPartitioningEmployeeInputsContainer } from "styled/teamsPartition/teamsPartitionEmployeeCard";
 
 import EmployeeType from "components/teamsPartition/EmployeeType";
-import {initializeNewEmployee, modifyCurrentEmployee} from "teamsPartitionFunctions/addNewEmployee";
+import {deleteGivenEmployee, initializeNewEmployee, modifyCurrentEmployee} from "teamsPartitionFunctions/manageEmployee";
 
 const TeamsPartition:React.FC = () => {
 
@@ -23,6 +24,11 @@ const TeamsPartition:React.FC = () => {
     const updateAnEmployee = (ind: number, name: string, surname: string):void => {
         const newList:EmployeeType[] = modifyCurrentEmployee(employeesList, ind, name, surname);
         setEmployeesList(newList);
+    }
+
+    const deleteAnEmployee = (ind: number):void => {
+        const newList:EmployeeType[] = deleteGivenEmployee(employeesList, ind);
+        setEmployeesList(newList)
     }
 
     return <>
@@ -44,12 +50,20 @@ const TeamsPartition:React.FC = () => {
                         <TeamsPartitioningEmployeeCardHeader className="block-center">
                             Employee {index+1}
                         </TeamsPartitioningEmployeeCardHeader>
-                        <TeamsPartitioningEmployeeInput type="text" placeholder="Name..."
-                            value={employee.name} onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
-                                updateAnEmployee(index, e.currentTarget.value, employee.surname)}/>
-                        <TeamsPartitioningEmployeeInput type="text" placeholder="Surname..."
-                            value={employee.surname} onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
-                                updateAnEmployee(index, employee.name, e.currentTarget.value)} />
+                        <TeamsPartitioningEmployeeInputsContainer className="block-center">
+                            <TeamsPartitioningEmployeeInput type="text" placeholder="Name..."
+                                value={employee.name} onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+                                    updateAnEmployee(index, e.currentTarget.value, employee.surname)}/>
+                            <TeamsPartitioningEmployeeInput type="text" placeholder="Surname..."
+                                value={employee.surname} onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+                                    updateAnEmployee(index, employee.name, e.currentTarget.value)} />
+                        </TeamsPartitioningEmployeeInputsContainer>
+                        <TeamsPartitioningAddEmployeeButton className="block-center">
+                            <DeleteForeverIcon 
+                                style={{ color: "inherit", fontSize: "inherit" }}
+                                onClick={() => deleteAnEmployee(index)}
+                            />
+                        </TeamsPartitioningAddEmployeeButton>
                     </TeamsPartitioningEmployeeCard>)
                 }
                 {
