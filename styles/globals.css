@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
 html,
 body {
   padding: 0;
@@ -13,6 +15,12 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.block-center{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media (prefers-color-scheme: dark) {
