@@ -1,20 +1,42 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Head from "next/head";
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
 
 import { TeamsPartitionHeader, TeamsPartitioningCard, 
-    TeamsPartitioningHeader, TeamsPartitioningEmployeesContainer} from "styled/teamsPartition/teamsPartition";
+    TeamsPartitioningHeader, TeamsPartitioningEmployeesContainer, TeamsPartitioningNextPhaseButton} from "styled/teamsPartition/teamsPartition";
 import { TeamsPartitioningEmployeeCard, 
     TeamsPartitioningEmployeeCardHeader, TeamsPartitioningAddEmployeeButton, TeamsPartitioningEmployeeInput, TeamsPartitioningEmployeeInputsContainer } from "styled/teamsPartition/teamsPartitionEmployeeCard";
 
 import EmployeeType from "components/teamsPartition/EmployeeType";
 import {deleteGivenEmployee, initializeNewEmployee, modifyCurrentEmployee} from "teamsPartitionFunctions/manageEmployee";
+import calculateNewTeams from "teamsPartitionFunctions/calculateTheTeams";
 
 const TeamsPartition:React.FC = () => {
 
-    const [employeesList, setEmployeesList] = useState<EmployeeType[]>([]);
+    const [employeesList, setEmployeesList] = useState<EmployeeType[]>([{
+        name: "alfa",
+        surname: "alfa2"
+    },{
+        name: "beta",
+        surname: "beta2"
+    },{
+        name: "gamma",
+        surname: "alfa2"
+    },{
+        name: "delta",
+        surname: "alfa2"
+    },{
+        name: "theta",
+        surname: "alfa2"
+    }]);
+
+    const [employeesConflicts, setEmployeesConflicts] = useState<number[][]>([[2,3],[3,4],[0],[0,4],[1,3]]);
+
+    const [isAddingOrBondsPhaseAvailable, toggleIsAddingOrBondsPhaseAvailable] = useState<boolean>(false);
+    const [phase, setPhase] = useState<number>(1);
 
     const addEmptyEmployee = ():void => {
         const newList:EmployeeType[] = initializeNewEmployee(employeesList);
@@ -31,6 +53,22 @@ const TeamsPartition:React.FC = () => {
         setEmployeesList(newList)
     }
 
+    const goToNextPhase = ():void => {
+        const newPhase = phase +1;
+        setPhase(newPhase);
+    }
+
+    useEffect(() => {
+        const newState:boolean = employeesList.length === 0 || !(employeesList.length > 0 && (
+            employeesList.filter((elem: EmployeeType) => elem.name.trim() === "" || elem.surname.trim() === "").length > 0
+         ));
+        toggleIsAddingOrBondsPhaseAvailable(newState);
+    }, [employeesList]);
+
+    useEffect(() => {
+        console.log(calculateNewTeams(employeesList, employeesConflicts));
+    }, []);
+
     return <>
         <Head>
             <title>Calculating teams - damn colleauge</title>
@@ -40,12 +78,12 @@ const TeamsPartition:React.FC = () => {
         </TeamsPartitionHeader>
         <TeamsPartitioningCard className="block-center">
             <TeamsPartitioningHeader className="block-center">
-                Team members
+                {phase === 0 ? "Team members" : "Team conflicts"}
             </TeamsPartitioningHeader>
-            <TeamsPartitioningEmployeesContainer className="block-center">
+            {phase === 0 ? <TeamsPartitioningEmployeesContainer className="block-center">
                 {
                     employeesList.map((employee: EmployeeType, index: number) => <TeamsPartitioningEmployeeCard style={{
-                        backgroundColor: "rgba(40,40,40,.6)"
+                        backgroundColor: index % 2 === 0 ? "rgba(50,50,50,.6)" : "rgba(40,40,40,.6)"
                     }}>
                         <TeamsPartitioningEmployeeCardHeader className="block-center">
                             Employee {index+1}
@@ -67,10 +105,7 @@ const TeamsPartition:React.FC = () => {
                     </TeamsPartitioningEmployeeCard>)
                 }
                 {
-                    employeesList.length > 0 && (
-                        employeesList[employeesList.length - 1].name === "" ||
-                        employeesList[employeesList.length - 1].surname === ""
-                     ) ?
+                    !isAddingOrBondsPhaseAvailable ?
                     null : <TeamsPartitioningEmployeeCard style={{
                         backgroundColor: "rgba(40,40,40,.6)"
                     }}>
@@ -84,7 +119,12 @@ const TeamsPartition:React.FC = () => {
                          />
                     </TeamsPartitioningAddEmployeeButton>
                 </TeamsPartitioningEmployeeCard>}
-            </TeamsPartitioningEmployeesContainer>
+            </TeamsPartitioningEmployeesContainer> : <TeamsPartitioningEmployeesContainer className="block-center">
+                </TeamsPartitioningEmployeesContainer>}
+            {phase === 0 && isAddingOrBondsPhaseAvailable && employeesList.length > 1 ? <TeamsPartitioningNextPhaseButton className="block-center">
+                <SkipNextIcon style={{color: "inherit", fontSize: "inherit"}}
+                    onClick={goToNextPhase} />
+            </TeamsPartitioningNextPhaseButton> : null}
         </TeamsPartitioningCard>
     </>
 };
