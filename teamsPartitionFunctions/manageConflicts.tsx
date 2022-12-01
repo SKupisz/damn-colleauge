@@ -31,3 +31,17 @@ export const updateUnprocessedConflict = (
     operand[conflictIndex][employeeIndex] = newEmployeeData;
     return operand;
 };
+
+export const binomial = (n: number):number => {
+    let result:number = n*(n-1);
+    return result/2;
+}
+
+export const isListFulfilled = (
+    currentConflicts: [EmployeeType, EmployeeType][]
+):boolean => currentConflicts.filter((elem: [EmployeeType, EmployeeType]) => elem[0].name === "" || elem[0].surname === "" || elem[1].name === "" || elem[1].surname === "").length === 0;
+
+export const checkIfNextConflictCanBeAdded = (
+    employeesList: EmployeeType[],
+    currentConflicts: [EmployeeType, EmployeeType][]
+):boolean => currentConflicts.length+1 <= binomial(employeesList.length) && isListFulfilled(currentConflicts);

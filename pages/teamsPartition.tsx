@@ -13,7 +13,7 @@ import { TeamsPartitioningEmployeeCard,
     TeamsPartitioningEmployeeCardHeader, TeamsPartitioningAddEmployeeButton, TeamsPartitioningEmployeeInput, TeamsPartitioningEmployeeInputsContainer } from "styled/teamsPartition/teamsPartitionEmployeeCard";
 
 import { TeamsPartitioningConflictCard, TeamsPartitioningConflictHeader, TeamsPartitioningConflictUsersList, TeamsPartitioningConflictUsersListWrapper } from "styled/teamsPartition/teamsPartitionConflictCard";
-import { addNewUnprocessedConflict, initializeNewConflictList, updateUnprocessedConflict } from "teamsPartitionFunctions/manageConflicts";
+import { addNewUnprocessedConflict, checkIfNextConflictCanBeAdded, initializeNewConflictList, isListFulfilled, updateUnprocessedConflict } from "teamsPartitionFunctions/manageConflicts";
 
 import {deleteGivenEmployee, initializeNewEmployee, modifyCurrentEmployee} from "teamsPartitionFunctions/manageEmployee";
 import calculateNewTeams from "teamsPartitionFunctions/calculateTheTeams";
@@ -31,7 +31,7 @@ const TeamsPartition:React.FC = () => {
         surname: "gamma2",
     }]);
 
-    const [employeesConflicts, setEmployeesConflicts] = useState<number[][]>([[],[],[],[],[]]);
+    const [employeesConflicts, setEmployeesConflicts] = useState<number[][]>([[],[],[]]);
     const [unprocessedConflicts, setUnprocessedConflicts] = useState<[EmployeeType, EmployeeType][]>([]);
     const [calcultedTeams, setCalculatedTeams] = useState<EmployeeType[][]>([]);
 
@@ -79,8 +79,22 @@ const TeamsPartition:React.FC = () => {
     }, [employeesList]);
 
     useEffect(() => {
+        const operand:number[][] = [...employeesConflicts];
+        unprocessedConflicts.forEach((elem: [EmployeeType, EmployeeType]) => {
+            const ind1:number = employeesList.indexOf(elem[0]), ind2:number = employeesList.indexOf(elem[1]);
+            if(ind1 !== -1 && ind2 !== -1){
+                operand[ind1] = [...operand[ind1], ind2];
+                operand[ind2] = [...operand[ind2], ind1];
+            }
+        });
+
+        setEmployeesConflicts(operand);
+    }, [unprocessedConflicts]);
+
+    useEffect(() => {
         if(phase === 2){
             const teams:EmployeeType[][] = calculateNewTeams(employeesList, employeesConflicts);
+            console.log(teams);
             setCalculatedTeams(teams);
         }
     }, [phase]);
@@ -165,7 +179,7 @@ const TeamsPartition:React.FC = () => {
                     </TeamsPartitioningConflictCard>)
                 }
                 {unprocessedConflicts.length === 0 || (unprocessedConflicts.length > 0 
-                && unprocessedConflicts.filter((elem: [EmployeeType, EmployeeType]) => elem[0].name === "" || elem[0].surname === "" || elem[1].name === "" || elem[1].surname === "").length === 0)
+                && checkIfNextConflictCanBeAdded(employeesList, unprocessedConflicts))
                 ? <TeamsPartitioningConflictCard className="block-center">
                     <TeamsPartitioningConflictHeader className="block-center">
                         Add new conflict
@@ -181,7 +195,7 @@ const TeamsPartition:React.FC = () => {
                     
                     </TeamsPartitioningEmployeesContainer>}
             {(phase === 0 && isAddingOrBondsPhaseAvailable && employeesList.length > 1) ||
-            (phase === 1 && unprocessedConflicts.filter((elem: [EmployeeType, EmployeeType]) => elem[0].name === "" || elem[0].surname === "" || elem[1].name === "" || elem[1].surname === "").length === 0) ? <TeamsPartitioningNextPhaseButton className="block-center">
+            (phase === 1 && isListFulfilled(unprocessedConflicts)) ? <TeamsPartitioningNextPhaseButton className="block-center">
                 <SkipNextIcon style={{color: "inherit", fontSize: "inherit"}}
                     onClick={goToNextPhase} />
             </TeamsPartitioningNextPhaseButton> : null}
