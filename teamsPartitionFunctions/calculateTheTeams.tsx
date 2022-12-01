@@ -3,7 +3,7 @@ import EmployeeType from "components/teamsPartition/EmployeeType";
 const calculateNewTeams = (employeesList: EmployeeType[], conflictTypes: number[][]):EmployeeType[][] => {
     const finalTeams:EmployeeType[][] = [];
 
-    let globalInd:number = 0, localInd:number = 0;
+    let globalInd:number = 0;//, localInd:number = 0;
 
     const haveATeam:boolean[] = [];
 
@@ -16,11 +16,11 @@ const calculateNewTeams = (employeesList: EmployeeType[], conflictTypes: number[
             globalInd++;
         }
         else{
-            localInd = globalInd;
+            //localInd = globalInd;
             const newEmployees:EmployeeType[] = [employeesList[globalInd]];
             const newEmployeesInds:[number, boolean][] = [[globalInd, true]]; // [index, isQualified for the Team]
-            for(let i:number = localInd+1; i < employeesList.length; i++){
-                if(haveATeam[i] === false && conflictTypes[i].filter((elem: number) => elem === localInd).length === 0){
+            for(let i:number = globalInd+1; i < employeesList.length; i++){
+                if(haveATeam[i] === false && conflictTypes[i].filter((elem: number) => elem === globalInd).length === 0){
                     newEmployees.push(employeesList[i]);
                     newEmployeesInds.push([i, true]);
                 }

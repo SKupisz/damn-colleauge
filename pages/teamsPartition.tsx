@@ -5,12 +5,16 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 
+import EmployeeType from "components/teamsPartition/EmployeeType";
+
 import { TeamsPartitionHeader, TeamsPartitioningCard, 
     TeamsPartitioningHeader, TeamsPartitioningEmployeesContainer, TeamsPartitioningNextPhaseButton} from "styled/teamsPartition/teamsPartition";
 import { TeamsPartitioningEmployeeCard, 
     TeamsPartitioningEmployeeCardHeader, TeamsPartitioningAddEmployeeButton, TeamsPartitioningEmployeeInput, TeamsPartitioningEmployeeInputsContainer } from "styled/teamsPartition/teamsPartitionEmployeeCard";
 
-import EmployeeType from "components/teamsPartition/EmployeeType";
+import { TeamsPartitioningConflictCard, TeamsPartitioningConflictHeader, TeamsPartitioningConflictUsersList, TeamsPartitioningConflictUsersListWrapper } from "styled/teamsPartition/teamsPartitionConflictCard";
+import { addNewUnprocessedConflict, initializeNewConflictList, updateUnprocessedConflict } from "teamsPartitionFunctions/manageConflicts";
+
 import {deleteGivenEmployee, initializeNewEmployee, modifyCurrentEmployee} from "teamsPartitionFunctions/manageEmployee";
 import calculateNewTeams from "teamsPartitionFunctions/calculateTheTeams";
 
@@ -18,29 +22,26 @@ const TeamsPartition:React.FC = () => {
 
     const [employeesList, setEmployeesList] = useState<EmployeeType[]>([{
         name: "alfa",
-        surname: "alfa2"
-    },{
+        surname: "alfa2",
+    }, {
         name: "beta",
-        surname: "beta2"
-    },{
+        surname: "beta2",
+    }, {
         name: "gamma",
-        surname: "alfa2"
-    },{
-        name: "delta",
-        surname: "alfa2"
-    },{
-        name: "theta",
-        surname: "alfa2"
+        surname: "gamma2",
     }]);
 
-    const [employeesConflicts, setEmployeesConflicts] = useState<number[][]>([[2,3],[3,4],[0],[0,4],[1,3]]);
+    const [employeesConflicts, setEmployeesConflicts] = useState<number[][]>([[],[],[],[],[]]);
+    const [unprocessedConflicts, setUnprocessedConflicts] = useState<[EmployeeType, EmployeeType][]>([]);
 
     const [isAddingOrBondsPhaseAvailable, toggleIsAddingOrBondsPhaseAvailable] = useState<boolean>(false);
-    const [phase, setPhase] = useState<number>(1);
+    const [phase, setPhase] = useState<number>(0);
 
     const addEmptyEmployee = ():void => {
         const newList:EmployeeType[] = initializeNewEmployee(employeesList);
+        const newConflictList:number[][] = initializeNewConflictList(employeesConflicts);
         setEmployeesList(newList);
+        setEmployeesConflicts(newConflictList);
     };
 
     const updateAnEmployee = (ind: number, name: string, surname: string):void => {
@@ -51,6 +52,17 @@ const TeamsPartition:React.FC = () => {
     const deleteAnEmployee = (ind: number):void => {
         const newList:EmployeeType[] = deleteGivenEmployee(employeesList, ind);
         setEmployeesList(newList)
+    }
+
+    const addEmptyConflict = (): void => {
+        const newList:[EmployeeType, EmployeeType][] = addNewUnprocessedConflict(unprocessedConflicts);
+        setUnprocessedConflicts(newList);
+    }
+
+    const modifyAConflict = (globalIndex: number, localIndex: number, employeeData: string):void => {
+        const employee:EmployeeType = employeesList.filter((elem: EmployeeType) => elem.name + " " +elem.surname === employeeData)[0];
+        const newList:[EmployeeType, EmployeeType][] = updateUnprocessedConflict(unprocessedConflicts, globalIndex, localIndex, employee);
+        setUnprocessedConflicts(newList);
     }
 
     const goToNextPhase = ():void => {
@@ -64,10 +76,6 @@ const TeamsPartition:React.FC = () => {
          ));
         toggleIsAddingOrBondsPhaseAvailable(newState);
     }, [employeesList]);
-
-    useEffect(() => {
-        console.log(calculateNewTeams(employeesList, employeesConflicts));
-    }, []);
 
     return <>
         <Head>
@@ -120,6 +128,44 @@ const TeamsPartition:React.FC = () => {
                     </TeamsPartitioningAddEmployeeButton>
                 </TeamsPartitioningEmployeeCard>}
             </TeamsPartitioningEmployeesContainer> : <TeamsPartitioningEmployeesContainer className="block-center">
+                {
+                    unprocessedConflicts.map((elem: [EmployeeType, EmployeeType], index: number) => <TeamsPartitioningConflictCard className="block-center">
+                        <TeamsPartitioningConflictHeader className="block-ceter">
+                            Conflict {index+1}
+                        </TeamsPartitioningConflictHeader>
+                        <TeamsPartitioningConflictUsersListWrapper className="block-center">
+                            <TeamsPartitioningConflictUsersList className="block-center"
+                            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => modifyAConflict(index, 0, event.currentTarget.value)}>
+                                <option>Select 1st employee:</option>
+                                {
+                                    employeesList.map((elem: EmployeeType) => <option>
+                                        {`${elem.name} ${elem.surname}`}
+                                    </option>)
+                                }
+                            </TeamsPartitioningConflictUsersList>
+                            <TeamsPartitioningConflictUsersList className="block-center"
+                            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => modifyAConflict(index, 1, event.currentTarget.value)}>
+                                <option>Select 2nd employee:</option>
+                                {
+                                    employeesList.map((elem: EmployeeType) => <option>
+                                        {`${elem.name} ${elem.surname}`}
+                                    </option>)
+                                }
+                            </TeamsPartitioningConflictUsersList>
+                        </TeamsPartitioningConflictUsersListWrapper>
+                    </TeamsPartitioningConflictCard>)
+                }
+                <TeamsPartitioningConflictCard className="block-center">
+                    <TeamsPartitioningConflictHeader className="block-center">
+                        Add new conflict
+                    </TeamsPartitioningConflictHeader>
+                    <TeamsPartitioningAddEmployeeButton className="block-center">
+                        <AddCircleOutlineIcon 
+                            style={{ color: "inherit", fontSize: "inherit" }}
+                            onClick={addEmptyConflict}
+                         />
+                    </TeamsPartitioningAddEmployeeButton>
+                </TeamsPartitioningConflictCard>
                 </TeamsPartitioningEmployeesContainer>}
             {phase === 0 && isAddingOrBondsPhaseAvailable && employeesList.length > 1 ? <TeamsPartitioningNextPhaseButton className="block-center">
                 <SkipNextIcon style={{color: "inherit", fontSize: "inherit"}}
