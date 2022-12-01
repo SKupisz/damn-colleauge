@@ -33,6 +33,7 @@ const TeamsPartition:React.FC = () => {
 
     const [employeesConflicts, setEmployeesConflicts] = useState<number[][]>([[],[],[],[],[]]);
     const [unprocessedConflicts, setUnprocessedConflicts] = useState<[EmployeeType, EmployeeType][]>([]);
+    const [calcultedTeams, setCalculatedTeams] = useState<EmployeeType[][]>([]);
 
     const [isAddingOrBondsPhaseAvailable, toggleIsAddingOrBondsPhaseAvailable] = useState<boolean>(false);
     const [phase, setPhase] = useState<number>(0);
@@ -76,6 +77,13 @@ const TeamsPartition:React.FC = () => {
          ));
         toggleIsAddingOrBondsPhaseAvailable(newState);
     }, [employeesList]);
+
+    useEffect(() => {
+        if(phase === 2){
+            const teams:EmployeeType[][] = calculateNewTeams(employeesList, employeesConflicts);
+            setCalculatedTeams(teams);
+        }
+    }, [phase]);
 
     return <>
         <Head>
@@ -127,7 +135,8 @@ const TeamsPartition:React.FC = () => {
                          />
                     </TeamsPartitioningAddEmployeeButton>
                 </TeamsPartitioningEmployeeCard>}
-            </TeamsPartitioningEmployeesContainer> : <TeamsPartitioningEmployeesContainer className="block-center">
+            </TeamsPartitioningEmployeesContainer> : 
+            phase === 1 ? <TeamsPartitioningEmployeesContainer className="block-center">
                 {
                     unprocessedConflicts.map((elem: [EmployeeType, EmployeeType], index: number) => <TeamsPartitioningConflictCard className="block-center">
                         <TeamsPartitioningConflictHeader className="block-ceter">
@@ -155,7 +164,9 @@ const TeamsPartition:React.FC = () => {
                         </TeamsPartitioningConflictUsersListWrapper>
                     </TeamsPartitioningConflictCard>)
                 }
-                <TeamsPartitioningConflictCard className="block-center">
+                {unprocessedConflicts.length === 0 || (unprocessedConflicts.length > 0 
+                && unprocessedConflicts.filter((elem: [EmployeeType, EmployeeType]) => elem[0].name === "" || elem[0].surname === "" || elem[1].name === "" || elem[1].surname === "").length === 0)
+                ? <TeamsPartitioningConflictCard className="block-center">
                     <TeamsPartitioningConflictHeader className="block-center">
                         Add new conflict
                     </TeamsPartitioningConflictHeader>
@@ -165,9 +176,12 @@ const TeamsPartition:React.FC = () => {
                             onClick={addEmptyConflict}
                          />
                     </TeamsPartitioningAddEmployeeButton>
-                </TeamsPartitioningConflictCard>
-                </TeamsPartitioningEmployeesContainer>}
-            {phase === 0 && isAddingOrBondsPhaseAvailable && employeesList.length > 1 ? <TeamsPartitioningNextPhaseButton className="block-center">
+                </TeamsPartitioningConflictCard> : null}
+                </TeamsPartitioningEmployeesContainer> : <TeamsPartitioningEmployeesContainer className="block-center">
+                    
+                    </TeamsPartitioningEmployeesContainer>}
+            {(phase === 0 && isAddingOrBondsPhaseAvailable && employeesList.length > 1) ||
+            (phase === 1 && unprocessedConflicts.filter((elem: [EmployeeType, EmployeeType]) => elem[0].name === "" || elem[0].surname === "" || elem[1].name === "" || elem[1].surname === "").length === 0) ? <TeamsPartitioningNextPhaseButton className="block-center">
                 <SkipNextIcon style={{color: "inherit", fontSize: "inherit"}}
                     onClick={goToNextPhase} />
             </TeamsPartitioningNextPhaseButton> : null}
