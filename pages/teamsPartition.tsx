@@ -17,6 +17,7 @@ import { addNewUnprocessedConflict, checkIfNextConflictCanBeAdded, initializeNew
 import {deleteGivenEmployee, initializeNewEmployee, modifyCurrentEmployee} from "teamsPartitionFunctions/manageEmployee";
 import calculateNewTeams from "teamsPartitionFunctions/calculateTheTeams";
 import EmployeeCard from "components/teamsPartition/EmployeeCard";
+import { TeamsPartitioningResultsBanner, TeamsPartitioningResultsEmployee, TeamsPartitioningResultsInfo, TeamsPartitioningResultsTeamWrapper } from "styled/teamsPartition/teamsPartitionResults";
 
 const TeamsPartition:React.FC = () => {
 
@@ -106,11 +107,11 @@ const TeamsPartition:React.FC = () => {
             <title>Calculating teams - damn colleauge</title>
         </Head>
         <TeamsPartitionHeader className="block-center">
-            Teams partitioning
+            {phase < 2 ? "Teams partitioning" : "Partitioning results"}
         </TeamsPartitionHeader>
         <TeamsPartitioningCard className="block-center">
             <TeamsPartitioningHeader className="block-center">
-                {phase === 0 ? "Team members" : "Team conflicts"}
+                {phase === 0 ? "Team members" : phase === 1 ? "Team conflicts" : "Teams"}
             </TeamsPartitioningHeader>
             {phase === 0 ? <TeamsPartitioningEmployeesContainer className="block-center">
                 {
@@ -180,7 +181,23 @@ const TeamsPartition:React.FC = () => {
                     </TeamsPartitioningAddEmployeeButton>
                 </TeamsPartitioningConflictCard> : null}
                 </TeamsPartitioningEmployeesContainer> : <TeamsPartitioningEmployeesContainer className="block-center">
-                    
+                    <TeamsPartitioningResultsInfo className="block-center">
+                        After concerning both your employees and the conflicts among them, for the effective completion of the work you need at least {calcultedTeams.length} {calcultedTeams.length > 1 ? "teams" : "team"}.
+                    </TeamsPartitioningResultsInfo>
+                    {
+                        calcultedTeams.map((elem: EmployeeType[], index: number) => (<TeamsPartitioningResultsTeamWrapper className="block-center">
+                        <TeamsPartitioningResultsBanner className="block-center">
+                            Team {index+1}
+                        </TeamsPartitioningResultsBanner>
+                        {
+                            elem.map((employee: EmployeeType) => 
+                                <TeamsPartitioningResultsEmployee className="block-center">
+                                    {employee.name + " " + employee.surname}
+                                </TeamsPartitioningResultsEmployee>
+                            )
+                        }
+                    </TeamsPartitioningResultsTeamWrapper>))
+                    }
                     </TeamsPartitioningEmployeesContainer>}
             {(phase === 0 && isAddingOrBondsPhaseAvailable && employeesList.length > 1) ||
             (phase === 1 && isListFulfilled(unprocessedConflicts)) ? <TeamsPartitioningNextPhaseButton className="block-center">

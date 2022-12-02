@@ -54,6 +54,10 @@ export const TeamsPartitioningHeader = styled.header`
     letter-spacing: 0.03em;
     text-align: center;
 
+    background: linear-gradient(45deg, ${(props) => props.theme.color.title} 20%, #027830 40%, #05ab45 90%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
     @media screen and (min-width: 425px){
         font-size: 1.5em;
     }
