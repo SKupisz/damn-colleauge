@@ -17,24 +17,15 @@ import { addNewUnprocessedConflict, checkIfNextConflictCanBeAdded, initializeNew
 import {deleteGivenEmployee, initializeNewEmployee, modifyCurrentEmployee} from "teamsPartitionFunctions/manageEmployee";
 import calculateNewTeams from "teamsPartitionFunctions/calculateTheTeams";
 import EmployeeCard from "components/teamsPartition/EmployeeCard";
-import { TeamsPartitioningResultsBanner, TeamsPartitioningResultsEmployee, TeamsPartitioningResultsInfo, TeamsPartitioningResultsTeamWrapper } from "styled/teamsPartition/teamsPartitionResults";
+import { TeamsPartitioningResultsBanner, TeamsPartitioningResultsEmployee, TeamsPartitioningResultsGoingBackBtn, TeamsPartitioningResultsInfo, TeamsPartitioningResultsTeamWrapper } from "styled/teamsPartition/teamsPartitionResults";
 
 const TeamsPartition:React.FC = () => {
 
-    const [employeesList, setEmployeesList] = useState<EmployeeType[]>([{
-        name: "alfa",
-        surname: "alfa2",
-    }, {
-        name: "beta",
-        surname: "beta2",
-    }, {
-        name: "gamma",
-        surname: "gamma2",
-    }]);
+    const [employeesList, setEmployeesList] = useState<EmployeeType[]>([]);
 
     const [employeesConflicts, setEmployeesConflicts] = useState<number[][]>([[],[],[]]);
     const [unprocessedConflicts, setUnprocessedConflicts] = useState<[EmployeeType, EmployeeType][]>([]);
-    const [calcultedTeams, setCalculatedTeams] = useState<EmployeeType[][]>([]);
+    const [calculatedTeams, setCalculatedTeams] = useState<EmployeeType[][]>([]);
 
     const [isAddingOrBondsPhaseAvailable, toggleIsAddingOrBondsPhaseAvailable] = useState<boolean>(false);
     const [phase, setPhase] = useState<number>(0);
@@ -73,6 +64,15 @@ const TeamsPartition:React.FC = () => {
     const goToNextPhase = ():void => {
         const newPhase = phase +1;
         setPhase(newPhase);
+    }
+
+    const resetTheApp = ():void => {
+        setCalculatedTeams([]);
+        setUnprocessedConflicts([]);
+        setEmployeesList([]);
+        setEmployeesConflicts([]);
+        toggleIsAddingOrBondsPhaseAvailable(true);
+        setPhase(0);
     }
 
     useEffect(() => {
@@ -182,10 +182,10 @@ const TeamsPartition:React.FC = () => {
                 </TeamsPartitioningConflictCard> : null}
                 </TeamsPartitioningEmployeesContainer> : <TeamsPartitioningEmployeesContainer className="block-center">
                     <TeamsPartitioningResultsInfo className="block-center">
-                        After concerning both your employees and the conflicts among them, for the effective completion of the work you need at least {calcultedTeams.length} {calcultedTeams.length > 1 ? "teams" : "team"}.
+                        After concerning both your employees and the conflicts among them, for the effective completion of the work you need at least {calculatedTeams.length} {calculatedTeams.length > 1 ? "teams" : "team"}.
                     </TeamsPartitioningResultsInfo>
                     {
-                        calcultedTeams.map((elem: EmployeeType[], index: number) => (<TeamsPartitioningResultsTeamWrapper className="block-center">
+                        calculatedTeams.map((elem: EmployeeType[], index: number) => (<TeamsPartitioningResultsTeamWrapper className="block-center">
                         <TeamsPartitioningResultsBanner className="block-center">
                             Team {index+1}
                         </TeamsPartitioningResultsBanner>
@@ -205,6 +205,12 @@ const TeamsPartition:React.FC = () => {
                     onClick={goToNextPhase} />
             </TeamsPartitioningNextPhaseButton> : null}
         </TeamsPartitioningCard>
+        {
+            phase === 2 && calculatedTeams.length > 0 ? <TeamsPartitioningResultsGoingBackBtn className="block-center"
+                onClick={resetTheApp}>
+                Go back
+            </TeamsPartitioningResultsGoingBackBtn> : null
+        }
     </>
 };
 

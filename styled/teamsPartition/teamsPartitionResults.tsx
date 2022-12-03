@@ -89,3 +89,31 @@ export const TeamsPartitioningResultsEmployee = styled.div`
         margin-bottom: 2vh;
     }
 `;
+
+export const TeamsPartitioningResultsGoingBackBtn = styled.div`
+    width: fit-content;
+    height: fit-content;
+    padding: 20px 40px;
+    box-shadow: ${(props) => props.theme.boxShadow};
+    text-shadow: ${(props) => props.theme.textShadow};
+    font-size: 1.45em;
+    letter-spacing: 0.02em;
+    border-radius: 10px;
+    color: ${(props) => props.theme.color.title};
+    background: rgba(40,40,40,.5);
+    margin-bottom: 4vh;
+    cursor: pointer;
+    transition: all 0.4s;
+
+    &:hover{
+        filter: brightness(70%);
+    }
+
+    @media screen and (min-width: 425px){
+        font-size: 1.9em;
+    }
+
+    @media screen and (min-width: 768px){
+        font-size: 2.3em;
+    }
+`;
