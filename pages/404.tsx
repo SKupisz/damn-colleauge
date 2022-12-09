@@ -19,8 +19,8 @@ const Error404:React.FC = () => {
             <Link href="/">
                 <ErrorButton type="button">
                     Damn colleauge
-                </ErrorButton> 
-            </Link> 
+                </ErrorButton>
+            </Link>
             <Link href="/teamsPartition">
                 <ErrorButton type="button">
                     Teams partition

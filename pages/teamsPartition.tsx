@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from "react";
 import Head from "next/head";
 
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import SkipNextIcon from "@mui/icons-material/SkipNext";
 
 import EmployeeType from "components/teamsPartition/EmployeeType";
 
-import { TeamsPartitionHeader, TeamsPartitioningCard, 
+import { TeamsPartitionHeader, TeamsPartitioningCard,
     TeamsPartitioningHeader, TeamsPartitioningEmployeesContainer, TeamsPartitioningNextPhaseButton} from "styled/teamsPartition/teamsPartition";
-import { TeamsPartitioningEmployeeCard, 
+import { TeamsPartitioningEmployeeCard,
     TeamsPartitioningEmployeeCardHeader, TeamsPartitioningAddEmployeeButton } from "styled/teamsPartition/teamsPartitionEmployeeCard";
 
 import { TeamsPartitioningConflictCard, TeamsPartitioningConflictHeader, TeamsPartitioningConflictUsersList, TeamsPartitioningConflictUsersListWrapper } from "styled/teamsPartition/teamsPartitionConflictCard";
@@ -115,7 +115,7 @@ const TeamsPartition:React.FC = () => {
             </TeamsPartitioningHeader>
             {phase === 0 ? <TeamsPartitioningEmployeesContainer className="block-center">
                 {
-                    employeesList.map((employee: EmployeeType, index: number) => <EmployeeCard 
+                    employeesList.map((employee: EmployeeType, index: number) => <EmployeeCard
                     employee={employee}
                     index={index}
                     deleteCallback={deleteAnEmployee}
@@ -130,13 +130,13 @@ const TeamsPartition:React.FC = () => {
                         Add employee
                     </TeamsPartitioningEmployeeCardHeader>
                     <TeamsPartitioningAddEmployeeButton className="block-center">
-                        <AddCircleOutlineIcon 
+                        <AddCircleOutlineIcon
                             style={{ color: "inherit", fontSize: "inherit" }}
                             onClick={addEmptyEmployee}
                          />
                     </TeamsPartitioningAddEmployeeButton>
                 </TeamsPartitioningEmployeeCard>}
-            </TeamsPartitioningEmployeesContainer> : 
+            </TeamsPartitioningEmployeesContainer> :
             phase === 1 ? <TeamsPartitioningEmployeesContainer className="block-center">
                 {
                     unprocessedConflicts.map((elem: [EmployeeType, EmployeeType], index: number) => <TeamsPartitioningConflictCard className="block-center">
@@ -167,14 +167,14 @@ const TeamsPartition:React.FC = () => {
                         </TeamsPartitioningConflictUsersListWrapper>
                     </TeamsPartitioningConflictCard>)
                 }
-                {unprocessedConflicts.length === 0 || (unprocessedConflicts.length > 0 
+                {unprocessedConflicts.length === 0 || (unprocessedConflicts.length > 0
                 && checkIfNextConflictCanBeAdded(employeesList, unprocessedConflicts))
                 ? <TeamsPartitioningConflictCard className="block-center">
                     <TeamsPartitioningConflictHeader className="block-center">
                         Add new conflict
                     </TeamsPartitioningConflictHeader>
                     <TeamsPartitioningAddEmployeeButton className="block-center">
-                        <AddCircleOutlineIcon 
+                        <AddCircleOutlineIcon
                             style={{ color: "inherit", fontSize: "inherit" }}
                             onClick={addEmptyConflict}
                          />
@@ -190,7 +190,7 @@ const TeamsPartition:React.FC = () => {
                             Team {index+1}
                         </TeamsPartitioningResultsBanner>
                         {
-                            elem.map((employee: EmployeeType) => 
+                            elem.map((employee: EmployeeType) =>
                                 <TeamsPartitioningResultsEmployee className="block-center">
                                     {employee.name + " " + employee.surname}
                                 </TeamsPartitioningResultsEmployee>

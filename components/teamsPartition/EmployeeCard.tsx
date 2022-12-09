@@ -1,5 +1,5 @@
 import React from "react";
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 import { TeamsPartitioningAddEmployeeButton, TeamsPartitioningEmployeeCard, TeamsPartitioningEmployeeCardHeader, TeamsPartitioningEmployeeInput, TeamsPartitioningEmployeeInputsContainer } from "styled/teamsPartition/teamsPartitionEmployeeCard";
 import EmployeeType from "./EmployeeType";
@@ -25,14 +25,14 @@ const EmployeeCard:React.FC<EmployeeCardInterface> = ({
         </TeamsPartitioningEmployeeCardHeader>
         <TeamsPartitioningEmployeeInputsContainer className="block-center">
             <TeamsPartitioningEmployeeInput type="text" placeholder="Name..."
-                value={employee.name} onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+                value={employee.name} onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     updateCallback(index, e.currentTarget.value, employee.surname)}/>
             <TeamsPartitioningEmployeeInput type="text" placeholder="Surname..."
-                value={employee.surname} onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+                value={employee.surname} onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     updateCallback(index, employee.name, e.currentTarget.value)} />
         </TeamsPartitioningEmployeeInputsContainer>
         <TeamsPartitioningAddEmployeeButton className="block-center">
-            <DeleteForeverIcon 
+            <DeleteForeverIcon
                 style={{ color: "inherit", fontSize: "inherit" }}
                 onClick={() => deleteCallback(index)}
             />

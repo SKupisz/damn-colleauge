@@ -1,3 +1,16 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next",
+  "rules": {
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off",
+    "react/jsx-key": "off",
+    "quotes": [
+      "error",
+      "double",
+      {
+          "avoidEscape": true
+      }
+    ],
+    "no-trailing-spaces": ["error"]
+  }
 }
