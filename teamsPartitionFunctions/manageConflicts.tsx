@@ -41,6 +41,16 @@ export const isListFulfilled = (
     currentConflicts: [EmployeeType, EmployeeType][]
 ):boolean => currentConflicts.filter((elem: [EmployeeType, EmployeeType]) => elem[0].name === "" || elem[0].surname === "" || elem[1].name === "" || elem[1].surname === "").length === 0;
 
+export const conflictsInputFilter = (
+    currentConflicts: [EmployeeType, EmployeeType][],
+    pairPosition: number,
+    pairIndex: number,
+    baseEmployee: EmployeeType,
+    comparingEmployee?: EmployeeType,
+):boolean => currentConflicts[pairPosition][pairIndex] !== baseEmployee && (comparingEmployee === undefined || (
+    comparingEmployee !== undefined && currentConflicts.filter((elem: [EmployeeType, EmployeeType]) => (elem[0] === baseEmployee && elem[1] === comparingEmployee) || (elem[1] === baseEmployee && elem[0] == comparingEmployee)).length === 0
+));
+
 export const checkIfNextConflictCanBeAdded = (
     employeesList: EmployeeType[],
     currentConflicts: [EmployeeType, EmployeeType][]

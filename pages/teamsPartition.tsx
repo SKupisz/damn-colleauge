@@ -14,7 +14,7 @@ import { TeamsPartitioningEmployeeCard,
     TeamsPartitioningEmployeeCardHeader, TeamsPartitioningAddEmployeeButton } from "styled/teamsPartition/teamsPartitionEmployeeCard";
 
 import { TeamsPartitioningConflictCard, TeamsPartitioningConflictHeader, TeamsPartitioningConflictUsersList, TeamsPartitioningConflictUsersListWrapper } from "styled/teamsPartition/teamsPartitionConflictCard";
-import { addNewUnprocessedConflict, checkIfNextConflictCanBeAdded, initializeNewConflictList, isListFulfilled, updateUnprocessedConflict } from "teamsPartitionFunctions/manageConflicts";
+import { addNewUnprocessedConflict, checkIfNextConflictCanBeAdded, conflictsInputFilter, initializeNewConflictList, isListFulfilled, updateUnprocessedConflict } from "teamsPartitionFunctions/manageConflicts";
 
 import {deleteGivenEmployee, initializeNewEmployee, modifyCurrentEmployee} from "teamsPartitionFunctions/manageEmployee";
 import calculateNewTeams from "teamsPartitionFunctions/calculateTheTeams";
@@ -157,7 +157,10 @@ const TeamsPartition:React.FC = () => {
                             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => modifyAConflict(index, 0, event.currentTarget.value)}>
                                 <option>Select 1st employee:</option>
                                 {
-                                    employeesList.filter((elem: EmployeeType) => unprocessedConflicts[index][1] !== elem).map((elem: EmployeeType) => <option>
+                                    (elem[0].name + " " +elem[0].surname).length > 1 ? <option>{elem[0].name + " " +elem[0].surname}</option> : null
+                                }
+                                {
+                                    employeesList.filter((elem: EmployeeType) => conflictsInputFilter(unprocessedConflicts, index, 1, elem, unprocessedConflicts[index][1])).map((elem: EmployeeType) => <option>
                                         {`${elem.name} ${elem.surname}`}
                                     </option>)
                                 }
@@ -165,9 +168,12 @@ const TeamsPartition:React.FC = () => {
                             <TeamsPartitioningConflictUsersList className="block-center"
                             value={elem[1].name + " " +elem[1].surname}
                             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => modifyAConflict(index, 1, event.currentTarget.value)}>
-                                <option>Select 2nd employee:</option>
+                                <option>Select 2nd employee:</option>                               
                                 {
-                                    employeesList.filter((elem: EmployeeType) => unprocessedConflicts[index][0] !== elem).map((elem: EmployeeType) => <option>
+                                    (elem[1].name + " " +elem[1].surname).length > 1 ? <option>{elem[1].name + " " +elem[1].surname}</option> : null
+                                }
+                                {
+                                    employeesList.filter((elem: EmployeeType) => conflictsInputFilter(unprocessedConflicts, index, 0, elem, unprocessedConflicts[index][0])).map((elem: EmployeeType) => <option>
                                         {`${elem.name} ${elem.surname}`}
                                     </option>)
                                 }
