@@ -81,6 +81,16 @@ export const TeamsPartitioningEmployeesContainer = styled.main`
     }
 `;
 
+export const TeamsPartitioningButtonsContainer = styled.div`
+    width: calc(100% - 20px);
+    padding: 10px;
+    text-align: center;
+
+    @media screen and (min-width: 1024px){
+        width: calc(90% - 20px);
+    }
+`;
+
 export const TeamsPartitioningNextPhaseButton = styled.div`
     width: fit-content;
     height: fit-content;
@@ -90,6 +100,9 @@ export const TeamsPartitioningNextPhaseButton = styled.div`
     color: ${(props) => props.theme.color.regular};
     cursor: pointer;
     transition: all 0.4s;
+    display: inline-block;
+    vertical-align: top;
+    margin: 10px;
 
     &:hover{
         filter: brightness(70%);

@@ -3,11 +3,13 @@ import Head from "next/head";
 
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 
 import EmployeeType from "components/teamsPartition/EmployeeType";
 
 import { TeamsPartitionHeader, TeamsPartitioningCard,
-    TeamsPartitioningHeader, TeamsPartitioningEmployeesContainer, TeamsPartitioningNextPhaseButton} from "styled/teamsPartition/teamsPartition";
+    TeamsPartitioningHeader, TeamsPartitioningEmployeesContainer, 
+    TeamsPartitioningButtonsContainer, TeamsPartitioningNextPhaseButton} from "styled/teamsPartition/teamsPartition";
 import { TeamsPartitioningEmployeeCard,
     TeamsPartitioningEmployeeCardHeader, TeamsPartitioningAddEmployeeButton } from "styled/teamsPartition/teamsPartitionEmployeeCard";
 
@@ -18,6 +20,7 @@ import {deleteGivenEmployee, initializeNewEmployee, modifyCurrentEmployee} from 
 import calculateNewTeams from "teamsPartitionFunctions/calculateTheTeams";
 import EmployeeCard from "components/teamsPartition/EmployeeCard";
 import { TeamsPartitioningResultsBanner, TeamsPartitioningResultsEmployee, TeamsPartitioningResultsGoingBackBtn, TeamsPartitioningResultsInfo, TeamsPartitioningResultsTeamWrapper } from "styled/teamsPartition/teamsPartitionResults";
+import Navigation from "components/teamsPartition/navigation";
 
 const TeamsPartition:React.FC = () => {
 
@@ -64,6 +67,11 @@ const TeamsPartition:React.FC = () => {
     const goToNextPhase = ():void => {
         const newPhase = phase +1;
         setPhase(newPhase);
+    }
+
+    const goToPreviousPhase = ():void => {
+        const newPhase = phase - 1;
+        if(newPhase >= 0) setPhase(newPhase);
     }
 
     const resetTheApp = ():void => {
@@ -199,11 +207,14 @@ const TeamsPartition:React.FC = () => {
                     </TeamsPartitioningResultsTeamWrapper>))
                     }
                     </TeamsPartitioningEmployeesContainer>}
-            {(phase === 0 && isAddingOrBondsPhaseAvailable && employeesList.length > 1) ||
-            (phase === 1 && isListFulfilled(unprocessedConflicts)) ? <TeamsPartitioningNextPhaseButton className="block-center">
-                <SkipNextIcon style={{color: "inherit", fontSize: "inherit"}}
-                    onClick={goToNextPhase} />
-            </TeamsPartitioningNextPhaseButton> : null}
+                    <Navigation 
+                        phase={phase}
+                        goToNextPhase={goToNextPhase}
+                        goToPreviousPhase={goToPreviousPhase}
+                        employeesList={employeesList}
+                        unprocessedConflicts={unprocessedConflicts}
+                        bondsStatus={isAddingOrBondsPhaseAvailable}
+                    />
         </TeamsPartitioningCard>
         {
             phase === 2 && calculatedTeams.length > 0 ? <TeamsPartitioningResultsGoingBackBtn className="block-center"
