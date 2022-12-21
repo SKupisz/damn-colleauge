@@ -1,7 +1,7 @@
 import React from "react";
 
 import SkipNextIcon from "@mui/icons-material/SkipNext";
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 
 import { TeamsPartitioningButtonsContainer, TeamsPartitioningNextPhaseButton } from "styled/teamsPartition/teamsPartition";
 
@@ -26,13 +26,13 @@ const Navigation:React.FC<NavigationInterface> = ({
     unprocessedConflicts,
 }:NavigationInterface) => {
     return <TeamsPartitioningButtonsContainer className="block-center">
-        {phase === 1 
+        {phase === 1
         ? <TeamsPartitioningNextPhaseButton className="block-center">
             <SkipPreviousIcon style={{color: "inherit", fontSize: "inherit"}}
                 onClick={goToPreviousPhase} />
         </TeamsPartitioningNextPhaseButton> : null}
     {(phase === 0 && bondsStatus && employeesList.length > 1) ||
-    (phase === 1 && isListFulfilled(unprocessedConflicts)) 
+    (phase === 1 && isListFulfilled(unprocessedConflicts))
     ? <TeamsPartitioningNextPhaseButton className="block-center">
         <SkipNextIcon style={{color: "inherit", fontSize: "inherit"}}
             onClick={goToNextPhase} />

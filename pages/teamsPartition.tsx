@@ -3,12 +3,12 @@ import Head from "next/head";
 
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 
 import EmployeeType from "components/teamsPartition/EmployeeType";
 
 import { TeamsPartitionHeader, TeamsPartitioningCard,
-    TeamsPartitioningHeader, TeamsPartitioningEmployeesContainer, 
+    TeamsPartitioningHeader, TeamsPartitioningEmployeesContainer,
     TeamsPartitioningButtonsContainer, TeamsPartitioningNextPhaseButton} from "styled/teamsPartition/teamsPartition";
 import { TeamsPartitioningEmployeeCard,
     TeamsPartitioningEmployeeCardHeader, TeamsPartitioningAddEmployeeButton } from "styled/teamsPartition/teamsPartitionEmployeeCard";
@@ -168,7 +168,7 @@ const TeamsPartition:React.FC = () => {
                             <TeamsPartitioningConflictUsersList className="block-center"
                             value={elem[1].name + " " +elem[1].surname}
                             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => modifyAConflict(index, 1, event.currentTarget.value)}>
-                                <option>Select 2nd employee:</option>                               
+                                <option>Select 2nd employee:</option>
                                 {
                                     (elem[1].name + " " +elem[1].surname).length > 1 ? <option>{elem[1].name + " " +elem[1].surname}</option> : null
                                 }
@@ -213,7 +213,7 @@ const TeamsPartition:React.FC = () => {
                     </TeamsPartitioningResultsTeamWrapper>))
                     }
                     </TeamsPartitioningEmployeesContainer>}
-                    <Navigation 
+                    <Navigation
                         phase={phase}
                         goToNextPhase={goToNextPhase}
                         goToPreviousPhase={goToPreviousPhase}
