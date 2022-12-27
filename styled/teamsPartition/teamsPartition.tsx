@@ -30,7 +30,7 @@ export const TeamsPartitionHeader = styled.header`
 
 export const TeamsPartitioningCard = styled.section`
     width: calc(100% - 20px);
-    height: calc(85vh - 20px);
+    height: calc(90vh - 20px);
     padding: 10px;
     border-radius: 10px;
     text-align: center;
@@ -95,7 +95,7 @@ export const TeamsPartitioningNextPhaseButton = styled.div`
     width: fit-content;
     height: fit-content;
     position: relative;
-    top: 4vh;
+    top: 1vh;
     font-size: 2.9em;
     color: ${(props) => props.theme.color.regular};
     cursor: pointer;
